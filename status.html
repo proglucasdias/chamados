@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#122c42" />
+    <title>Status de entregas | Copacol</title>
+    <link rel="stylesheet" href="status.css?v=1" />
+  </head>
+  <body>
+    <header class="status-header">
+      <div class="brand"><img class="brand-logo" src="rondomar-logo.jpeg" alt="Rodomar Transportes" /><div><span class="kicker">OPERAÇÃO DE TRANSPORTE</span><h1>Status de entregas</h1></div></div>
+      <div class="header-right"><span class="sync-state" id="syncState"><i></i> Conectando</span><span class="today-label" id="todayLabel"></span></div>
+    </header>
+    <main class="page">
+      <section class="summary" aria-label="Resumo do dia">
+        <article><span class="summary-icon blue">▤</span><div><small>Viagens do dia</small><strong id="totalCount">0</strong></div></article>
+        <article><span class="summary-icon green">✓</span><div><small>Finalizadas</small><strong id="doneCount">0</strong></div></article>
+        <article><span class="summary-icon amber">◷</span><div><small>Em andamento</small><strong id="activeCount">0</strong></div></article>
+      </section>
+      <section class="toolbar">
+        <div class="date-control"><label for="filterDate">Data da operação</label><input id="filterDate" type="date" /></div>
+        <label class="search"><span>⌕</span><input id="searchInput" type="search" placeholder="Buscar cliente, motorista, NF..." /></label>
+        <div class="toolbar-actions">
+          <button class="print-button" id="printButton" type="button"><span>▤</span> Imprimir relatório</button>
+          <button class="add-button" id="addButton" type="button"><span>＋</span> Nova viagem</button>
+        </div>
+      </section>
+      <section class="entry-panel" id="entryPanel" hidden>
+        <div class="entry-heading"><div><span class="kicker">REGISTRO DE VIAGEM</span><h2 id="formTitle">Nova viagem</h2></div><button class="close-button" id="closeForm" type="button" aria-label="Fechar">×</button></div>
+        <form id="tripForm">
+          <input id="tripId" type="hidden" />
+          <label>Data<input id="tripDate" name="date" type="date" required /></label>
+          <label>Motorista<input id="driver" name="driver" placeholder="Nome do motorista" required /></label>
+          <label>Placa<input id="plate" name="plate" placeholder="ABC1D23" autocapitalize="characters" required /></label>
+          <label>Transportadora<input id="carrier" name="carrier" value="RODOMAR" /></label>
+          <label class="span-2">Cliente<input id="client" name="client" placeholder="Nome do cliente" required /></label>
+          <label>Destino<input id="destination" name="destination" placeholder="Cidade ou unidade" required /></label>
+          <label>UF<input id="state" name="state" maxlength="2" placeholder="PR" autocapitalize="characters" /></label>
+          <label>Chegada no cliente<input id="arrival" name="arrival" type="time" /></label>
+          <label>Saída do cliente<input id="departure" name="departure" type="time" /></label>
+          <label>Nota fiscal<input id="invoice" name="invoice" inputmode="numeric" placeholder="Número da NF" /></label>
+          <label>Status<select id="tripStatus" name="status"><option>Em andamento</option><option>Finalizado</option><option>Aguardando</option><option>Cancelado</option></select></label>
+          <div class="form-actions"><button class="cancel-button" id="cancelForm" type="button">Cancelar</button><button class="save-button" type="submit">Salvar viagem</button></div>
+        </form>
+      </section>
+      <section class="list-heading"><div><h2>Viagens</h2><p id="listSubtitle">Registros da data selecionada</p></div><span class="count-pill" id="visibleCount">0 registros</span></section>
+      <section class="trip-list" id="tripList" aria-live="polite"></section>
+      <p class="footer-note">Atualizações salvas para toda a equipe neste dispositivo e nos demais aparelhos conectados.</p>
+    </main>
+    <template id="tripTemplate">
+      <article class="trip-card">
+        <div class="trip-top"><div class="trip-client"><span class="client-initial"></span><div><strong class="client-name"></strong><small class="trip-destination"></small></div></div><span class="status-badge"></span></div>
+        <div class="trip-data"><div><small>MOTORISTA</small><strong class="trip-driver"></strong></div><div><small>PLACA · TRANSP.</small><strong><span class="trip-plate"></span> <span class="trip-carrier"></span></strong></div><div><small>CHEGADA</small><strong class="trip-arrival">—</strong></div><div><small>SAÍDA</small><strong class="trip-departure">—</strong></div><div><small>TEMPO NO CLIENTE</small><strong class="trip-duration">—</strong></div><div><small>UF · NF</small><strong><span class="trip-state"></span> <span class="trip-invoice"></span></strong></div></div>
+        <div class="trip-actions"><button class="quick-status" type="button">Atualizar status</button><button class="edit-trip" type="button">Editar</button><button class="delete-trip" type="button" aria-label="Excluir viagem">Excluir</button></div>
+      </article>
+    </template>
+    <section id="printReport" class="print-report" aria-hidden="true"></section>
+    <script src="status.js?v=1"></script>
+  </body>
+</html>

@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Painel Admin | Chamados de TI</title>
+    <link rel="stylesheet" href="styles.css?v=20260529" />
+  </head>
+  <body class="admin-page">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Painel de TI</p>
+        <h1>Administracao de Chamados</h1>
+      </div>
+      <div class="topbar-actions">
+        <a class="ghost-button link-button" href="index.html" data-setting-key="adminUserLinkText">Portal do usuario</a>
+        <button class="ghost-button" id="logoutButton" type="button" data-setting-key="adminLogoutButtonText">Sair</button>
+      </div>
+    </header>
+
+    <main class="admin-shell">
+      <div class="panel admin-banner">
+        <div>
+          <p class="eyebrow">Sessao ativa</p>
+          <h2 id="adminName">Administrador</h2>
+          <p id="adminRole" class="session-role"></p>
+        </div>
+        <p class="hero-copy admin-banner-copy">
+          A fila de atendimento fica aberta por padrao. Os demais modulos aparecem pelos botoes de visualizacao.
+        </p>
+      </div>
+
+      <section class="panel admin-nav-panel">
+        <div class="section-heading">
+          <p class="eyebrow">Visualizacao</p>
+          <h2>Areas do painel</h2>
+        </div>
+        <div class="view-switcher" aria-label="Visualizacao do painel">
+          <button class="view-button is-active" type="button" data-view-trigger="queue" data-module="queue">
+            Fila de atendimento
+          </button>
+          <button class="view-button" type="button" data-view-trigger="reports" data-module="queue">
+            Relatorios
+          </button>
+          <button class="view-button" type="button" data-view-trigger="catalogs" data-module="catalog_management">
+            Cadastros
+          </button>
+          <button class="view-button" type="button" data-view-trigger="users" data-module="user_management">
+            Usuarios
+          </button>
+          <button class="view-button" type="button" data-view-trigger="settings" data-module="settings">
+            Configuracoes
+          </button>
+          <button class="view-button" type="button" data-view-trigger="security" data-module="password">
+            Seguranca
+          </button>
+        </div>
+      </section>
+
+      <section class="admin-view-stack" data-view-section="queue" data-module="queue">
+        <div class="metrics" aria-label="Resumo dos chamados">
+          <article>
+            <span id="metricOpen">0</span>
+            <p>Abertos</p>
+          </article>
+          <article>
+            <span id="metricProgress">0</span>
+            <p>Em atendimento</p>
+          </article>
+          <article>
+            <span id="metricDone">0</span>
+            <p>Resolvidos</p>
+          </article>
+          <article>
+            <span id="metricCritical">0</span>
+            <p>Criticos</p>
+          </article>
+        </div>
+
+        <section class="panel list-panel" aria-labelledby="tickets-title">
+          <div class="section-heading row-heading">
+            <div>
+              <p class="eyebrow">Fila de atendimento</p>
+              <h2 id="tickets-title">Chamados cadastrados</h2>
+            </div>
+            <div class="queue-panel-actions">
+              <button class="ghost-inline-button" id="seedButton" type="button" data-setting-key="adminSeedButtonText">
+                Carregar exemplos
+              </button>
+            </div>
+          </div>
+
+          <div class="toolbar">
+            <input id="searchInput" type="search" placeholder="Buscar chamado" aria-label="Buscar chamado" />
+            <select id="statusFilter" aria-label="Filtrar por status">
+              <option value="Todos">Todos</option>
+              <option value="Aberto">Aberto</option>
+              <option value="Em atendimento">Em atendimento</option>
+              <option value="Resolvido">Resolvido</option>
+            </select>
+          </div>
+
+          <div class="ticket-table" role="region" aria-live="polite">
+            <div class="table-header">
+              <span>Chamado</span>
+              <span>Solicitante</span>
+              <span>Prioridade</span>
+              <span>Status</span>
+              <span>Acoes</span>
+            </div>
+            <div id="ticketList" class="ticket-list"></div>
+          </div>
+        </section>
+      </section>
+
+      <section class="panel export-panel admin-view-panel" data-view-section="reports" data-module="queue" hidden>
+        <div class="section-heading">
+          <p class="eyebrow">Relatorios</p>
+          <h2>Exportacao detalhada</h2>
+        </div>
+        <p class="hero-copy">
+          Gera os arquivos Word, PDF e Excel com base nos chamados atualmente filtrados na fila.
+        </p>
+        <div class="export-controls">
+          <label>
+            Qual a periodicidade do relatorio?
+            <select id="reportPeriod" aria-label="Periodicidade do relatorio">
+              <option value="daily">Diario</option>
+              <option value="weekly">Semanal</option>
+              <option value="monthly" selected>Mensal</option>
+            </select>
+          </label>
+          <button class="primary-button" id="exportButton" type="button">Exportar relatorio</button>
+        </div>
+        <p id="exportMessage" class="hint-message" hidden></p>
+        <div id="exportLinks" class="export-links"></div>
+      </section>
+
+      <section class="panel settings-panel admin-view-panel" data-view-section="security" data-module="password" hidden>
+        <article>
+          <div class="section-heading">
+            <p class="eyebrow">Seguranca</p>
+            <h2>Senha do administrador</h2>
+          </div>
+
+          <form id="passwordForm" class="settings-form">
+            <label>
+              Nova senha
+              <input name="newPassword" type="password" placeholder="Digite uma nova senha" required />
+            </label>
+
+            <label>
+              Confirmar nova senha
+              <input name="confirmPassword" type="password" placeholder="Repita a nova senha" required />
+            </label>
+
+            <button class="primary-button" type="submit">Salvar nova senha</button>
+          </form>
+
+          <p id="passwordMessage" class="hint-message" hidden></p>
+        </article>
+      </section>
+
+      <section class="panel settings-panel admin-view-panel" data-view-section="users" data-module="user_management" hidden>
+        <article>
+          <div class="section-heading">
+            <p class="eyebrow">Usuarios</p>
+            <h2>Acesso da equipe de TI</h2>
+          </div>
+
+          <form id="userForm" class="settings-form">
+            <label>
+              Nome do usuario
+              <input name="name" type="text" placeholder="Ex.: Tecnico de TI" required />
+            </label>
+
+            <label>
+              Login
+              <input name="username" type="text" placeholder="Ex.: tecnico.ti" required />
+            </label>
+
+            <label>
+              E-mail
+              <input
+                name="email"
+                type="text"
+                inputmode="email"
+                autocomplete="email"
+                placeholder="Ex.: tecnico.ti@empresa.com"
+                required
+              />
+            </label>
+
+            <label>
+              Perfil
+              <select name="role" required>
+                <option value="technician">Tecnico</option>
+                <option value="master">Master</option>
+                <option value="admin">Administrador</option>
+              </select>
+            </label>
+
+            <label>
+              Senha
+              <input name="password" type="password" placeholder="Defina uma senha" required />
+            </label>
+
+            <fieldset class="module-fieldset">
+              <legend>Modulos de acesso</legend>
+              <label class="checkbox-row">
+                <input name="modules" type="checkbox" value="queue" checked />
+                <span>Fila de atendimento</span>
+              </label>
+              <label class="checkbox-row">
+                <input name="modules" type="checkbox" value="password" />
+                <span>Troca de senha</span>
+              </label>
+              <label class="checkbox-row">
+                <input name="modules" type="checkbox" value="settings" />
+                <span>Configuracoes de botoes</span>
+              </label>
+              <label class="checkbox-row">
+                <input name="modules" type="checkbox" value="user_management" />
+                <span>Cadastro de usuarios</span>
+              </label>
+              <label class="checkbox-row">
+                <input name="modules" type="checkbox" value="catalog_management" />
+                <span>Cadastros de apoio</span>
+              </label>
+            </fieldset>
+
+            <button class="primary-button" type="submit">Criar usuario</button>
+          </form>
+
+          <p id="userMessage" class="hint-message" hidden></p>
+          <div class="user-management-toolbar">
+            <select id="managedUserSelect" aria-label="Usuario selecionado" hidden>
+              <option value="">Selecione um usuario</option>
+            </select>
+
+            <div class="managed-user-details-grid">
+              <label>
+                Nome do usuario
+                <input id="managedNameInput" type="text" placeholder="Nome do usuario" />
+              </label>
+              <label>
+                Login
+                <input id="managedUsernameInput" type="text" placeholder="Login do usuario" />
+              </label>
+              <label>
+                E-mail
+                <input
+                  id="managedEmailInput"
+                  type="email"
+                  inputmode="email"
+                  autocomplete="email"
+                  placeholder="E-mail do usuario"
+                />
+              </label>
+            </div>
+
+            <button class="primary-button" id="saveManagedUserButton" type="button">
+              Salvar dados do usuario
+            </button>
+
+            <div class="managed-user-grid">
+              <label>
+                Perfil
+                <select id="managedRoleSelect" aria-label="Perfil do usuario selecionado">
+                  <option value="technician">Tecnico</option>
+                  <option value="master">Master</option>
+                  <option value="admin">Administrador</option>
+                </select>
+              </label>
+
+              <fieldset class="module-fieldset">
+                <legend>Permissoes do usuario</legend>
+                <label class="checkbox-row">
+                  <input name="managedModules" type="checkbox" value="queue" />
+                  <span>Fila de atendimento</span>
+                </label>
+                <label class="checkbox-row">
+                  <input name="managedModules" type="checkbox" value="password" />
+                  <span>Troca de senha</span>
+                </label>
+                <label class="checkbox-row">
+                  <input name="managedModules" type="checkbox" value="settings" />
+                  <span>Configuracoes de botoes</span>
+                </label>
+                <label class="checkbox-row">
+                  <input name="managedModules" type="checkbox" value="user_management" />
+                  <span>Cadastro de usuarios</span>
+                </label>
+                <label class="checkbox-row">
+                  <input name="managedModules" type="checkbox" value="catalog_management" />
+                  <span>Cadastros de apoio</span>
+                </label>
+              </fieldset>
+            </div>
+
+            <button class="primary-button" id="saveManagedAccessButton" type="button">
+              Salvar permissoes
+            </button>
+
+            <div class="managed-password-grid">
+              <label>
+                Nova senha do usuario
+                <input id="managedPasswordInput" type="password" placeholder="Digite a nova senha" />
+              </label>
+              <label>
+                Confirmar nova senha
+                <input id="managedPasswordConfirmInput" type="password" placeholder="Repita a nova senha" />
+              </label>
+            </div>
+
+            <button class="ghost-inline-button user-management-command" id="changeManagedPasswordButton" type="button">
+              Trocar senha do usuario
+            </button>
+
+            <div class="user-management-actions">
+              <button class="ghost-inline-button" id="blockUserButton" type="button">Bloquear</button>
+              <button class="ghost-inline-button" id="activateUserButton" type="button">Ativar</button>
+              <button class="ghost-inline-button" id="inactivateUserButton" type="button">Inativar</button>
+            </div>
+            <p id="userManagementHint" class="user-self-hint" hidden></p>
+          </div>
+          <div class="user-list">
+            <p class="user-list-title">Usuarios</p>
+            <div id="userList"></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="panel settings-panel admin-view-panel" data-view-section="settings" data-module="settings" hidden>
+        <article>
+          <div class="section-heading">
+            <p class="eyebrow">Configuracoes</p>
+            <h2>Botoes e links</h2>
+          </div>
+
+          <form id="settingsForm" class="settings-form">
+            <label>
+              Texto do botao de abrir chamado
+              <input name="userSubmitButtonText" type="text" required />
+            </label>
+
+            <label>
+              Texto do link do admin no portal do usuario
+              <input name="userAdminLinkText" type="text" required />
+            </label>
+
+            <label>
+              Texto do link para portal do usuario no admin
+              <input name="adminUserLinkText" type="text" required />
+            </label>
+
+            <label>
+              Texto do botao de entrar
+              <input name="adminLoginButtonText" type="text" required />
+            </label>
+
+            <label>
+              Texto do botao de sair
+              <input name="adminLogoutButtonText" type="text" required />
+            </label>
+
+            <label>
+              Texto do botao carregar exemplos
+              <input name="adminSeedButtonText" type="text" required />
+            </label>
+
+            <label class="checkbox-row">
+              <input name="showUserAdminLink" type="checkbox" />
+              <span>Mostrar link da area do administrador no portal do usuario</span>
+            </label>
+
+            <button class="primary-button" type="submit">Salvar configuracoes</button>
+          </form>
+
+          <p id="settingsMessage" class="hint-message" hidden></p>
+        </article>
+      </section>
+
+      <section class="panel settings-panel admin-view-panel" data-view-section="catalogs" data-module="catalog_management" hidden>
+        <article>
+          <div class="section-heading">
+            <p class="eyebrow">Cadastros</p>
+            <h2>Setor, categoria e prioridade</h2>
+          </div>
+
+          <div class="catalog-grid">
+            <section class="catalog-card">
+              <h3>Setores</h3>
+              <form id="departmentForm" class="catalog-form">
+                <input name="value" type="text" placeholder="Novo setor" required />
+                <button class="primary-button" type="submit">Adicionar</button>
+              </form>
+              <p id="departmentMessage" class="hint-message" hidden></p>
+              <div id="departmentList" class="catalog-list"></div>
+            </section>
+
+            <section class="catalog-card">
+              <h3>Categorias</h3>
+              <form id="categoryForm" class="catalog-form">
+                <input name="value" type="text" placeholder="Nova categoria" required />
+                <button class="primary-button" type="submit">Adicionar</button>
+              </form>
+              <p id="categoryMessage" class="hint-message" hidden></p>
+              <div id="categoryList" class="catalog-list"></div>
+            </section>
+
+            <section class="catalog-card">
+              <h3>Prioridades</h3>
+              <form id="priorityForm" class="catalog-form">
+                <input name="value" type="text" placeholder="Nova prioridade" required />
+                <button class="primary-button" type="submit">Adicionar</button>
+              </form>
+              <p id="priorityCatalogMessage" class="hint-message" hidden></p>
+              <div id="priorityList" class="catalog-list"></div>
+            </section>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <template id="ticketTemplate">
+      <article class="ticket-row">
+        <div>
+          <strong class="ticket-title"></strong>
+          <p class="ticket-meta"></p>
+          <p class="ticket-description"></p>
+        </div>
+        <span class="ticket-requester"></span>
+        <span class="badge priority-badge"></span>
+        <select class="status-select" aria-label="Alterar status"></select>
+        <button class="danger-button" type="button">Excluir</button>
+      </article>
+    </template>
+
+    <script src="shared.js?v=20261020"></script>
+    <script src="dashboard.js?v=20261020c"></script>
+  </body>
+</html>

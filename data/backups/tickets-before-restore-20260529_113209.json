@@ -1,0 +1,38 @@
+[
+  {
+    "id": "TI-202605-10001",
+    "requester": "Mariana Alves",
+    "email": "mariana.alves@empresa.com",
+    "department": "Financeiro",
+    "category": "Acesso e senha",
+    "priority": "Alta",
+    "title": "Bloqueio de acesso ao ERP",
+    "description": "Usuario nao consegue acessar o ERP apos troca de senha.",
+    "status": "Aberto",
+    "createdAt": "2026-05-29T14:03:47.918Z"
+  },
+  {
+    "id": "TI-202605-10002",
+    "requester": "Rafael Lima",
+    "email": "rafael.lima@empresa.com",
+    "department": "Comercial",
+    "category": "Internet e rede",
+    "priority": "Critica",
+    "title": "Equipe sem acesso a rede",
+    "description": "Sala comercial esta sem conexao cabeada e Wi-Fi desde o inicio do expediente.",
+    "status": "Em atendimento",
+    "createdAt": "2026-05-29T12:38:47.918Z"
+  },
+  {
+    "id": "TI-202605-10003",
+    "requester": "Camila Rocha",
+    "email": "camila.rocha@empresa.com",
+    "department": "Recursos Humanos",
+    "category": "Impressora",
+    "priority": "Media",
+    "title": "Impressora nao imprime documentos",
+    "description": "Fila de impressao fica presa e nenhuma estacao consegue imprimir.",
+    "status": "Resolvido",
+    "createdAt": "2026-05-29T10:28:47.918Z"
+  }
+]

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Abertura de Chamados de TI</title>
+    <link rel="stylesheet" href="styles.css?v=20260529" />
+  </head>
+  <body class="user-page">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Portal do Usuario</p>
+        <h1>Abertura de Chamados de TI</h1>
+      </div>
+      <div class="topbar-actions">
+        <a class="ghost-button link-button" href="status.html">Status de entregas</a>
+        <a class="ghost-button link-button" href="admin.html" data-setting-key="userAdminLinkText" data-visibility-key="showUserAdminLink">Area do administrador</a>
+      </div>
+    </header>
+
+    <main class="single-shell">
+      <section class="panel hero-panel">
+        <p class="eyebrow">Atendimento interno</p>
+        <h2>Descreva o problema e abra seu chamado em poucos minutos.</h2>
+        <p class="hero-copy">Use este link para registrar falhas, pedidos de acesso, problemas com sistema, rede, e-mail ou equipamentos.</p>
+      </section>
+
+      <section class="panel form-panel" aria-labelledby="new-ticket-title">
+        <div class="section-heading">
+          <p class="eyebrow">Novo atendimento</p>
+          <h2 id="new-ticket-title">Abrir chamado</h2>
+        </div>
+        <form id="ticketForm" class="ticket-form">
+          <label>Solicitante<input id="requester" name="requester" type="text" placeholder="Nome completo" required /></label>
+          <label>E-mail<input id="email" name="email" type="text" inputmode="email" autocomplete="email" placeholder="usuario@empresa.com" required /></label>
+          <label>Setor<select id="department" name="department" required><option value="">Selecione</option></select></label>
+          <label>Categoria<select id="category" name="category" required><option value="">Selecione</option></select></label>
+          <label>Prioridade<select id="priority" name="priority" required></select></label>
+          <label>Titulo<input id="title" name="title" type="text" placeholder="Resumo do problema" required /></label>
+          <label class="full">Descricao<textarea id="description" name="description" rows="5" placeholder="Descreva o impacto, mensagens de erro e quando o problema comecou" required></textarea></label>
+          <button class="primary-button full" type="submit" data-setting-key="userSubmitButtonText">Abrir chamado</button>
+        </form>
+        <p id="successMessage" class="success-message" hidden></p>
+      </section>
+    </main>
+    <script src="shared.js?v=20260529"></script>
+    <script src="user.js?v=20260529"></script>
+  </body>
+</html>

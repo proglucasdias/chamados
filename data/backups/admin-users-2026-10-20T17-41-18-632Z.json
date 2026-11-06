@@ -1,0 +1,43 @@
+[
+  {
+    "username": "admin",
+    "password": "admin123",
+    "name": "Administrador de TI",
+    "email": "",
+    "role": "admin",
+    "status": "active",
+    "modules": [
+      "queue",
+      "password",
+      "settings",
+      "user_management",
+      "catalog_management"
+    ]
+  },
+  {
+    "username": "lucas.dias",
+    "password": "mths10",
+    "name": "Lucas Dias",
+    "email": "lucas.dias@empresa.com",
+    "role": "master",
+    "status": "active",
+    "modules": [
+      "queue",
+      "password",
+      "settings",
+      "user_management",
+      "catalog_management"
+    ]
+  },
+  {
+    "username": "tecnico.ti",
+    "password": "ti123",
+    "name": "Tecnico de TI",
+    "email": "tecnico.ti@empresa.com",
+    "role": "technician",
+    "status": "active",
+    "modules": [
+      "queue"
+    ]
+  }
+]

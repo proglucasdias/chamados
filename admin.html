@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Administrador | Chamados de TI</title>
+    <link rel="stylesheet" href="styles.css?v=20260529" />
+  </head>
+  <body class="admin-page">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Painel de TI</p>
+        <h1>Administracao de Chamados</h1>
+      </div>
+      <div class="topbar-actions">
+        <a class="ghost-button link-button" href="index.html" data-setting-key="adminUserLinkText">Portal do usuario</a>
+      </div>
+    </header>
+
+    <main class="admin-shell">
+      <section class="login-shell">
+        <article class="panel login-panel">
+          <p class="eyebrow">Acesso restrito</p>
+          <h2>Entrar como administrador</h2>
+          <p class="hero-copy">
+            Use este link para acompanhar chamados, atualizar status e gerenciar as configuracoes.
+          </p>
+
+          <form id="loginForm" class="login-form">
+            <label>
+              Usuario
+              <input
+                name="username"
+                type="text"
+                placeholder="Digite seu usuario"
+                autocomplete="username"
+                required
+              />
+            </label>
+
+            <label>
+              Senha
+              <input
+                name="password"
+                type="password"
+                placeholder="Digite a senha de acesso"
+                autocomplete="current-password"
+                required
+              />
+            </label>
+
+            <button class="primary-button" type="submit" data-setting-key="adminLoginButtonText">Entrar</button>
+          </form>
+
+          <p id="loginError" class="error-message" hidden></p>
+
+          <section class="recovery-panel">
+            <p class="recovery-title">Esqueceu sua senha?</p>
+            <p class="hero-copy">
+              Informe seu usuario ou e-mail. Enviaremos um link seguro para criar uma nova senha.
+            </p>
+
+            <form id="recoveryForm" class="settings-form">
+              <label>
+                Usuario ou e-mail cadastrado
+                <input
+                  name="identifier"
+                  type="text"
+                  autocomplete="username"
+                  placeholder="Digite seu usuario ou e-mail"
+                  required
+                />
+              </label>
+
+              <button class="ghost-inline-button" type="submit">Enviar link de redefinicao</button>
+            </form>
+
+            <p id="recoveryMessage" class="hint-message" hidden></p>
+          </section>
+        </article>
+      </section>
+    </main>
+
+    <script src="shared.js?v=20261020"></script>
+    <script src="admin.js?v=20261020"></script>
+  </body>
+</html>

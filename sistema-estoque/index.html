@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#102a24" />
+    <title>Veste — estoque e vendas</title>
+    <link rel="stylesheet" href="estoque.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a class="brand" href="#inicio" aria-label="Veste, início"><span class="brand-mark">V</span><span>veste<span class="brand-dot">.</span><small>GESTÃO DA LOJA</small></span></a>
+      <p class="nav-label">MENU PRINCIPAL</p>
+      <nav aria-label="Menu principal">
+        <a class="nav-link active" href="#inicio"><span class="nav-icon">▦</span> Visão geral</a>
+        <a class="nav-link" href="#produtos"><span class="nav-icon">▤</span> Produtos</a>
+        <a class="nav-link" href="#movimentacoes"><span class="nav-icon">↗</span> Movimentações</a>
+      </nav>
+      <div class="sidebar-bottom"><div class="avatar">L</div><div><strong>Sua loja</strong><small>Controle de estoque</small></div><span class="online-dot"></span></div>
+    </aside>
+
+    <main class="main-content" id="inicio">
+      <header class="topbar"><div class="mobile-brand"><span class="brand-mark">V</span> veste<span class="brand-dot">.</span></div><span class="today" id="todayLabel"></span><button class="primary-button top-add" type="button" data-open-product>＋ <span>Novo produto</span></button></header>
+      <section class="welcome"><div><p class="eyebrow">PAINEL DA LOJA</p><h1>Estoque sob controle.</h1><p>Acompanhe seus produtos e mantenha tudo em movimento.</p></div><div class="welcome-decoration" aria-hidden="true">✳</div></section>
+
+      <section class="metrics" aria-label="Resumo do estoque">
+        <article class="metric-card"><div class="metric-top"><span>Produtos cadastrados</span><span class="metric-icon icon-green">▤</span></div><strong id="metricProducts">0</strong><small>modelos diferentes</small></article>
+        <article class="metric-card"><div class="metric-top"><span>Peças em estoque</span><span class="metric-icon icon-blue">▦</span></div><strong id="metricUnits">0</strong><small>unidades disponíveis</small></article>
+        <article class="metric-card"><div class="metric-top"><span>Estoque baixo</span><span class="metric-icon icon-orange">⌁</span></div><strong id="metricLow">0</strong><small>produtos com 5 peças ou menos</small></article>
+        <article class="metric-card"><div class="metric-top"><span>Saídas registradas</span><span class="metric-icon icon-purple">↗</span></div><strong id="metricOut">0</strong><small>peças movimentadas</small></article>
+      </section>
+
+      <section class="panel inventory-panel" id="produtos">
+        <div class="section-header"><div><p class="eyebrow">SEU CATÁLOGO</p><h2>Produtos</h2></div><button class="outline-button" type="button" data-open-product>＋ Cadastrar produto</button></div>
+        <div class="toolbar"><label class="search-box"><span>⌕</span><input id="searchInput" type="search" placeholder="Buscar produto..." aria-label="Buscar produto" /></label><div class="filters" role="group" aria-label="Filtrar produtos"><button class="filter-button active" data-filter="todos" type="button">Todos <span id="countTodos">0</span></button><button class="filter-button" data-filter="camisa" type="button">Camisas</button><button class="filter-button" data-filter="tenis" type="button">Tênis</button></div></div>
+        <div class="table-wrap"><table><thead><tr><th>PRODUTO</th><th>CATEGORIA</th><th>TAMANHO</th><th>PREÇO</th><th>QUANTIDADE</th><th>STATUS</th><th></th></tr></thead><tbody id="productRows"></tbody></table><div id="emptyState" class="empty-state"><span>▤</span><strong>Nenhum produto por aqui ainda</strong><p>Cadastre camisas e tênis para começar seu controle.</p><button class="primary-button" type="button" data-open-product>＋ Cadastrar primeiro produto</button></div></div>
+      </section>
+
+      <section class="panel movements-panel" id="movimentacoes"><div class="section-header"><div><p class="eyebrow">ACOMPANHAMENTO</p><h2>Últimas movimentações</h2></div><button class="text-button" id="clearHistory" type="button">Limpar histórico</button></div><div id="movementList" class="movement-list"></div><p id="movementEmpty" class="movement-empty">As saídas de estoque aparecerão aqui.</p></section>
+      <footer>Veste <span>•</span> Controle simples para sua loja</footer>
+    </main>
+
+    <dialog id="productDialog" class="dialog"><form id="productForm" method="dialog"><div class="dialog-heading"><div><p class="eyebrow">CATÁLOGO</p><h2>Novo produto</h2></div><button class="close-button" type="button" data-close-dialog aria-label="Fechar">×</button></div><div class="form-grid"><label class="field full-field">Nome do produto<input name="name" placeholder="Ex.: Camiseta básica" required maxlength="70" /></label><label class="field">Categoria<select name="category" required><option value="camisa">Camisa</option><option value="tenis">Tênis</option></select></label><label class="field">Tamanho<input name="size" placeholder="Ex.: M, 40, Único" required maxlength="20" /></label><label class="field">Preço de venda<input name="price" type="number" min="0" step="0.01" placeholder="0,00" required /></label><label class="field">Quantidade inicial<input name="quantity" type="number" min="0" step="1" placeholder="0" required /></label></div><p class="form-hint">Você poderá registrar novas saídas pela lista de produtos.</p><div class="dialog-actions"><button class="outline-button" type="button" data-close-dialog>Cancelar</button><button class="primary-button" type="submit">Salvar produto</button></div></form></dialog>
+    <dialog id="exitDialog" class="dialog"><form id="exitForm" method="dialog"><div class="dialog-heading"><div><p class="eyebrow">MOVIMENTAÇÃO DE ESTOQUE</p><h2>Registrar saída</h2></div><button class="close-button" type="button" data-close-dialog aria-label="Fechar">×</button></div><p id="exitProductName" class="selected-product"></p><input name="productId" type="hidden" /><label class="field">Quantidade de peças<input name="quantity" type="number" min="1" step="1" required /></label><label class="field reason-field">Motivo<select name="reason"><option value="Venda">Venda</option><option value="Troca">Troca</option><option value="Perda ou ajuste">Perda ou ajuste</option><option value="Outro">Outro</option></select></label><div class="dialog-actions"><button class="outline-button" type="button" data-close-dialog>Cancelar</button><button class="primary-button" type="submit">Confirmar saída</button></div></form></dialog>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="estoque.js"></script>
+  </body>
+</html>
