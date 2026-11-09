@@ -10,7 +10,6 @@ const host = process.env.HOST || "0.0.0.0";
 const dataDir = path.join(root, "data");
 const backupsDir = path.join(dataDir, "backups");
 const ticketsPath = path.join(dataDir, "tickets.json");
-const tripsPath = path.join(dataDir, "trips.json");
 const adminUsersPath = path.join(dataDir, "admin-users.json");
 const passwordResetsPath = path.join(dataDir, "password-resets.json");
 const catalogsPath = path.join(dataDir, "catalogs.json");
@@ -385,34 +384,25 @@ function handlePasswordResetConfirmation(request, response) {
 const server = http.createServer((request, response) => {
   const urlPath = decodeURIComponent(request.url.split("?")[0]);
 
+  const blockedDeliveryPaths = new Set([
+    "/status.html",
+    "/status.js",
+    "/status.css",
+    "/rondomar-logo.jpeg",
+  ]);
+
+  if (blockedDeliveryPaths.has(urlPath) || urlPath === "/api/trips") {
+    response.writeHead(410, {
+      "Content-Type": "text/plain; charset=utf-8",
+    });
+    response.end("O modulo de status de entregas nao faz parte deste sistema.");
+    return;
+  }
+
   if (request.method === "GET" && urlPath === "/api/tickets") {
     sendJson(response, 200, {
       tickets: readTicketsFile(),
     });
-    return;
-  }
-
-  if (request.method === "GET" && urlPath === "/api/trips") {
-    const trips = readJsonFile(tripsPath, []);
-    sendJson(response, 200, { trips: Array.isArray(trips) ? trips : [] });
-    return;
-  }
-
-  if (request.method === "POST" && urlPath === "/api/trips") {
-    readRequestBody(request)
-      .then((body) => {
-        const payload = JSON.parse(body || "{}");
-        const trips = Array.isArray(payload) ? payload : payload.trips;
-        if (!Array.isArray(trips)) {
-          sendJson(response, 400, { error: "invalid_trips_payload" });
-          return;
-        }
-        writeJsonFile(tripsPath, trips, "trips");
-        sendJson(response, 200, { ok: true, count: trips.length });
-      })
-      .catch((error) => {
-        sendJson(response, 500, { error: "trips_save_failed", details: error.message });
-      });
     return;
   }
 

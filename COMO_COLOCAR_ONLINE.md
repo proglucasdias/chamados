@@ -44,12 +44,6 @@ node dev-server.js
 Por padrao, ele roda na porta `8080`.
 Em hospedagens online, tambem aceita a porta definida pela variavel `PORT`.
 
-## Acessar o status de entregas pelo celular
-
-A pagina de acompanhamento fica em `status.html`. Depois de iniciar o servidor, abra `http://IP-DO-COMPUTADOR:8080/status.html` no celular conectado a mesma rede Wi-Fi. Para acessar de fora da empresa, publique o sistema em um servidor com dominio e HTTPS e use `https://SEU-DOMINIO/status.html`.
-
-Os registros ficam em `data/trips.json` no servidor e sincronizam entre os aparelhos conectados. Se o servidor estiver fora do ar, as alteracoes ficam salvas no armazenamento local do aparelho ate a conexao voltar; nesse periodo, elas ainda nao aparecem nos outros celulares.
-
 ## Atencao antes de publicar
 
 Antes de liberar para a internet, recomenda-se reforcar a seguranca da area administrativa:
